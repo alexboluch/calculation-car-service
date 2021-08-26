@@ -12,21 +12,3 @@ class CalculationSerializer(serializers.ModelSerializer):
         model = Calculation
         read_only_fields = ['id', 'create_date', 'url']
         exclude = ['owner',]
-
-class SearchCalculationSerializer(CalculationSerializer):
-        search_field = serializers.CharField()
-
-
-from django_elasticsearch_dsl_drf.serializers import DocumentSerializer
-
-from .documents import CalculationDocument
- 
- 
-class CalculationDocumentSerializer(DocumentSerializer):
-    class Meta:
-        document = CalculationDocument
-        read_only_fields = ['id', 'create_date', 'url']
-        exclude = ['owner',]
-
-
-   

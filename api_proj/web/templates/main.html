@@ -1,0 +1,25 @@
+{% extends "base.html" %} {% block content %}
+<div class="wrapper">
+    {% for calc in calc_list %}
+    <div class="calc">
+        <button class="edit"><a href={{calc.get_absolute_url}} title="Edit calc">Edit calc</a></button>
+        <div class="comment">Description - {{calc.comment}}</div>
+        <div class="title">Car - {{calc.title}}</div>
+        <div class="auction">Auction - {{calc.auction}}</div>
+        <div class="year">Year - {{calc.year}}</div>
+        <div class="engine">Engine - {{calc.engine}}</div>
+        <div class="auction_price">Buy price - ${{calc.auction_price}}</div>
+        <div class="commission_price">Comission price - ${{calc.commission_price}}</div>
+        <div class="swift_price">Swift price - ${{calc.swift_price}}</div>
+        <div class="delivery_all_price">All delivery price - ${{calc.delivery_all_price}}</div>
+        <div class="customs_clearance_price">Customs clearance price - ${{calc.customs_clearance_price}}</div>
+        <div class="broker_forwarding_price">Broker/forwarding price - ${{calc.broker_forwarding_price}}</div>
+        <div class="certification_price">Certification price - ${{calc.certification_price}}</div>
+        <div class="company_services_price">Company services price - ${{calc.company_services_price}}</div>
+        <div class="registration_price">Registration price - ${{calc.registration_price}}</div>
+        <div class=end_price>Final price - ${{calc.end_price}}</div>
+        <div class="create_date">Create date - {{calc.create_date}}</div>
+    </div>
+    {%endfor%}
+</div>
+{% include "pagination.html" with page=calc_list %} {% endblock %}

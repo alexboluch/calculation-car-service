@@ -7,6 +7,6 @@ router = DefaultRouter()
 router.register(r'calculations', CalculationViewSet, basename="calculation")
 urlpatterns = router.urls
 
-urlpatterns += path('search/', SearchView.as_view(), name='calculations_search'),
+# urlpatterns += path('search/', SearchView.as_view(), name='calculations_search'),
 
 

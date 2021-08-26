@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Start page</title>
+</head>
+
+<body>
+    <div class=header>
+        <div class=bar>
+            <button class="start_bar"> 
+                <a href="/main/" title="Start">Home</a>
+            </button> {% if user.is_authenticated %} {% if user.is_staff %}
+            <button class="admin_bar">
+                <a href="/admin/" title="Admin">Admin</a>
+            </button> {% endif %}
+            <button class="logout_bar">
+                <a href="/accounts/logout/" title="Logout">Logout</a>
+            </button> {% endif %}
+        </div>
+        <div class="panel">
+            {% if user.is_authenticated %}
+            <button class="add_calc">
+                <a href="/add_calc/" title="New calculation">New calculation</a>
+            </button> {%else%}
+            <button class="reg">
+                <a href="/reg/" title="Registration">Registration</a>
+            </button> {% endif %}
+        </div>
+    </div>
+    <div class='content'>
+        {% block content %} {% endblock %}
+    </div>
+    <div class="end_panel">
+
+    </div>
+
+</body>
+
+</html>

@@ -25,7 +25,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'django.contrib.sites',
-    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -33,10 +32,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api.apps.ApiConfig',
     'authentication.apps.AuthConfig',
+    'web.apps.WebConfig',
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
     'djoser',
+    'django.contrib.admin',
     # 'allauth',
     # 'allauth.account',
     # 'allauth.socialaccount',
