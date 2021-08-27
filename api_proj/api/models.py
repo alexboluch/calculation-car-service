@@ -16,7 +16,7 @@ class Calculation(models.Model):
         ("copart", "Copart"),
         ("iaai", "IAAI",)
     )
-    auction = models.CharField(max_length=10, null=True, blank=True, choices=LOAN_AUCTION, help_text='Copart or IAAI')
+    auction = models.CharField(max_length=10, null=True, blank=True, choices=LOAN_AUCTION, help_text='Copart or IAAI', default="IAAI")
     LOAN_YEAR = create_loan_year(2000)
     year = models.IntegerField(choices=LOAN_YEAR, help_text='Year is required')
     LOAN_ENGINE = create_loan_engine(1000, 3500)
@@ -35,7 +35,7 @@ class Calculation(models.Model):
     registration_price = models.IntegerField(null=True, blank=True, help_text='Auto-calculation field')
     end_price = models.IntegerField(null=True, blank=True, help_text='Auto-calculation field')
     comment = models.CharField(max_length=100, null=True, blank=True, help_text='Few words about this')
-    create_date = models.DateField(auto_now_add=True)
+    create_date = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     class Meta:
@@ -56,12 +56,18 @@ class Calculation(models.Model):
 
 
     def get_full_name(self):
-        return self.title + ", " + str(self.engine) + ", " + str(self.year)
+        return self.title + ", " + str(self.engine/1000) + "L, " + str(self.year) + " year, $" + str(self.end_price) + ", " + self.create_date.strftime("%d %B")
 
     
     def get_search_field(self):
         search = self.title + " " + str(self.engine) + " " + str(self.year) + " " + str(self.comment)
         return search
+
+    def get_str_date(self):
+        return self.create_date.strftime("%d %B")
+
+    def get_delete_url(self):
+        return '/calc_detail/' + str(self .id) + "/delete/"
     
 
     search_field = property(get_search_field)

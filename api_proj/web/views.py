@@ -2,7 +2,7 @@ from django.shortcuts import render
 from api.models import Calculation
 from django.contrib.auth.models import User
 from .logics import create_logic, create_loan_year
-from .forms import CalculationCreateForm, RegistrForm, CalculationForm
+from .forms import CalculationCreateForm, RegistrForm, CalculationForm, CalculationDeleteForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
@@ -60,7 +60,7 @@ def main_view(request):
         calculation_list = Calculation.objects.all()
     else:
         calculation_list = Calculation.objects.filter(owner=user)
-    paginator = Paginator(calculation_list, 5)
+    paginator = Paginator(calculation_list, 9)
     page = request.GET.get('page')  
     try:  
         posts = paginator.page(page)  
@@ -83,7 +83,7 @@ def calc_update(request, pk):
     data = {}
     calc = get_object_or_404(Calculation, pk=pk)
     if request.POST:
-        form = CalculationForm(request.POST)
+        form = CalculationCreateForm(request.POST)
         if form.is_valid():
             commission_price, swift_price, registration_price, delivery_land_price, delivery_all_price, customs_clearance_price, end_price = create_logic(form)
             calc.commission_price = commission_price
@@ -97,10 +97,24 @@ def calc_update(request, pk):
             calc.company_services_price = form.cleaned_data["company_services_price"]
             calc.broker_forwarding_price = form.cleaned_data["broker_forwarding_price"]
             calc.certification_price = form.cleaned_data["certification_price"]
+            calc.title = form.cleaned_data["title"]
             calc.save()
             return HttpResponseRedirect("/main")
     else:
-        form = CalculationForm(instance=calc)
+        form = CalculationCreateForm(instance=calc)
         data['form'] = form
     
     return render(request, 'calc/add_calc.html', data)
+
+
+def calc_delete(request, pk):
+    to_delete = get_object_or_404(Calculation, id=pk)
+    if request.POST:
+        form = CalculationDeleteForm(request.POST, instance=to_delete)
+        if form.is_valid(): # checks CSRF
+            to_delete.delete()
+            return HttpResponseRedirect("/main/")
+    else:
+        form = CalculationDeleteForm(instance=to_delete)
+    context = {'form': form}
+    return render(request, 'confirm_delete.html', context)

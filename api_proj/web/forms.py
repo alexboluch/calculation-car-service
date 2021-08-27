@@ -41,6 +41,10 @@ class CalculationForm(ModelForm):
         exclude = ['owner',]
 
 
+class CalculationDeleteForm(forms.ModelForm):
+    class Meta:
+        model = Calculation
+        fields = []
 
 
 

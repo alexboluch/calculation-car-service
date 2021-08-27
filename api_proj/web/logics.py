@@ -74,10 +74,14 @@ def calc_delivery_price(new):
     return delivery_land_price, delivery_all_price
 
 def calc_customs_clearance(new, commission_price, swift_price):
-    customs_clearance_price = math.ceil(57 * new.cleaned_data['engine'] / 1000 * (2021 - new.cleaned_data['year'])
+    if new.cleaned_data['engine']<3000:
+        coef = 50 * 1.14
+    else:
+        coef = 100 * 1.14
+    customs_clearance_price = math.ceil(coef * new.cleaned_data['engine'] / 1000 * (2021 - new.cleaned_data['year'])
     + 0.1*(new.cleaned_data['auction_price'] + commission_price + swift_price)
     + 0.2 * ((new.cleaned_data['auction_price'] + commission_price + swift_price)
-    + 57 * new.cleaned_data['engine'] / 1000 * (2021 - new.cleaned_data['year'])+0.1 *
+    + coef * new.cleaned_data['engine'] / 1000 * (2021 - new.cleaned_data['year'])+0.1 *
     (new.cleaned_data['auction_price'] + commission_price + swift_price))
     + 0.05 * (new.cleaned_data['auction_price'] + commission_price + swift_price))
     return customs_clearance_price

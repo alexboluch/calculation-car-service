@@ -1,8 +1,10 @@
 {% extends "base.html" %} {% block content %}
-<div class="wrapper">
+<div class="main">
     {% for calc in calc_list %}
     <div class="calc">
-        <button class="edit"><a href={{calc.get_absolute_url}} title="Edit calc">Edit calc</a></button>
+        <div class="edit">
+            <a href={{calc.get_absolute_url}} title="Edit">{{calc.get_full_name}}</a>
+        </div>
         <div class="comment">Description - {{calc.comment}}</div>
         <div class="title">Car - {{calc.title}}</div>
         <div class="auction">Auction - {{calc.auction}}</div>
@@ -18,7 +20,10 @@
         <div class="company_services_price">Company services price - ${{calc.company_services_price}}</div>
         <div class="registration_price">Registration price - ${{calc.registration_price}}</div>
         <div class=end_price>Final price - ${{calc.end_price}}</div>
-        <div class="create_date">Create date - {{calc.create_date}}</div>
+        <div class="create_date">Create date - {{calc.get_str_date}}</div>
+        <button class="edit">
+            <a href={{calc.get_delete_url}} title="Delete">Delete</a>
+        </button>
     </div>
     {%endfor%}
 </div>

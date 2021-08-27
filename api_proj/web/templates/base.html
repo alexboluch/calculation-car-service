@@ -3,11 +3,16 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Start page</title>
+    <title>Base page</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}" width="100%">
 </head>
 
 <body>
     <div class=header>
+        <div class="start-bar">
+            <img src="{% static 'logo.png' %}" alt="Image">
+        </div>
         <div class=bar>
             <button class="start_bar"> 
                 <a href="/main/" title="Start">Home</a>
