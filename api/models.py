@@ -41,8 +41,6 @@ class Calculation(models.Model):
     class Meta:
         ordering = ['-create_date']
 
-    def __str__(self):
-        return self.title + ", " + str(self.engine) + ", " + str(self.year)
 
     def get_absolute_url(self):
         return reverse ('calc_detail', args = [str(self .id)])
@@ -69,6 +67,8 @@ class Calculation(models.Model):
     def get_delete_url(self):
         return '/calc_detail/' + str(self .id) + "/delete/"
     
+    def __str__(self):
+        return self.get_full_name()
 
     search_field = property(get_search_field)
 

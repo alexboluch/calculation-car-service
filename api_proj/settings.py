@@ -1,7 +1,7 @@
 import os
 from datetime import timedelta
-
-
+import django_heroku
+from .secret import *
 
 from pathlib import Path
 
@@ -13,15 +13,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-zgb+qwijucu-(r&kg+58ii@*g+#am$3@492%3j!rf$ipg!+3^-'
+SECRET_KEY = SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.sites',
@@ -38,26 +37,13 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'djoser',
     'django.contrib.admin',
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
-    # 'django_elasticsearch_dsl',
 ]
 
 SITE_ID = 1
 
-# AUTHENTICATION_BACKENDS = [
-#     # Needed to login by username in Django admin, regardless of `allauth`
-#     'django.contrib.auth.backends.ModelBackend',
-
-#     # `allauth` specific authentication methods, such as login by e-mail
-#     'allauth.account.auth_backends.AuthenticationBackend',
-# ]
-
-
-# AUTH_USER_MODEL = 'auth.User'
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -93,10 +79,10 @@ DATABASES = {
 "default": {
     "ENGINE": "djongo",
     "CLIENT": {
-        "host": "mongodb+srv://alex:78087898@testbd.h5c13.mongodb.net/?retryWrites=true&w=majority",
-        "username": "alex",
-        "password": "78087898",
-        "name": "carBD",
+        "host": host,
+        "username": username,
+        "password": password,
+        "name": name,
         "authMechanism": "SCRAM-SHA-1",
     },
 }}
@@ -108,6 +94,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 8,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
@@ -128,18 +117,25 @@ USE_L10N = True
 
 USE_TZ = True
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 STATIC_URL = '/static/'
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "static"),
+# ]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+django_heroku.settings(locals())
+
 
 LOGIN_REDIRECT_URL = '/'
 
@@ -149,24 +145,8 @@ LOGIN_REDIRECT_URL = '/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-SITE_URL = "http://127.0.0.1:8000"
+SITE_URL = "https://papakupit.herokuapp.com/"
 
-# ELASTICSEARCH_DSL={
-#     'default': {
-#         'hosts': 'localhost:9200'
-#     },
-# }
-
-
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES':
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-
-#     'DEFAULT_PERMISSION_CLASSES': [
-#         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-#         'rest_framework.permissions.IsAuthenticated',
-#     ],
-# }
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -196,9 +176,6 @@ DJOSER = {
     'TOKEN_MODEL': None
 }
 
-# AUTHENTICATION_BACKENDS = {
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-# }
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),

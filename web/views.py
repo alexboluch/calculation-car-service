@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.forms import UserCreationForm
 
 
 def registration(request):
@@ -17,8 +19,20 @@ def registration(request):
     if request.method == 'POST':
         form = RegistrForm(request.POST)
         if form.is_valid():
-            form.save()
+            print("valid")
+            user = form.save(commit=False)
+            # try:
+            #     validate_password(form.cleaned_data['password'])
+            # except ValidationError as e:
+            #     form.add_error('password', e)
+            #     data['form'] = form
+            #     return render(request, 'registration/registration.html', data)
+            user.save()
             return HttpResponseRedirect('/main')
+        else:
+            print("not valid")
+            data['form'] = form
+            return render(request, 'registration/registration.html', data)
     else:
         form = RegistrForm()
         data['form'] = form

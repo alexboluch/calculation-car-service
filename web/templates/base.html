@@ -14,6 +14,7 @@
             <img src="{% static 'logo.png' %}" alt="Image">
         </div>
         <div class=bar>
+
             <button class="start_bar"> 
                 <a href="/main/" title="Start">Home</a>
             </button> {% if user.is_authenticated %} {% if user.is_staff %}
@@ -28,9 +29,6 @@
             {% if user.is_authenticated %}
             <button class="add_calc">
                 <a href="/add_calc/" title="New calculation">New calculation</a>
-            </button> {%else%}
-            <button class="reg">
-                <a href="/reg/" title="Registration">Registration</a>
             </button> {% endif %}
         </div>
     </div>
